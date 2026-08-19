@@ -8,10 +8,22 @@ export default function RootLayout() {
       <Tabs
         screenOptions={{
           tabBarStyle: { backgroundColor: "#083c69" },
-          tabBarActiveTintColor: "#fff",
-          animation: "fade",
+          tabBarLabelStyle: {
+            fontSize: 12,
+            fontWeight: "bold",
+            color: "#fff",
+          },
         }}
       >
+        <Tabs.Screen
+          name="planejador"
+          options={{
+            title: "Planejador",
+            headerShown: false,
+            tabBarIcon: () => <Lucide name="search" size={24} color="#fff" />,
+          }}
+        />
+
         <Tabs.Screen
           name="index"
           options={{
