@@ -11,9 +11,12 @@ export function CardPrecos({ nome, preco }: { nome: string; preco: number }) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#16d620",
+    backgroundColor: "#f5d520",
     padding: 10,
     marginBottom: 10,
     borderRadius: 10,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
