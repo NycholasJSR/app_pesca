@@ -20,7 +20,9 @@ export default function RootLayout() {
           options={{
             title: "Planejador",
             headerShown: false,
-            tabBarIcon: () => <Lucide name="search" size={24} color="#fff" />,
+            tabBarIcon: () => (
+              <Lucide name="fishing-rod" size={24} color="#fff" />
+            ),
           }}
         />
 
