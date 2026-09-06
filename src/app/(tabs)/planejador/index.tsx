@@ -8,6 +8,7 @@ export default function Planejador() {
         color="#feaa1a"
         icon="fish"
         text="Planejar por Pescado"
+        onPress={() => console.log("Apertou pescado")}
       />
       <BotaoPlanejador
         color="#c51a48"
