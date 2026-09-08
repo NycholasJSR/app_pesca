@@ -35,11 +35,18 @@
         }
       ],
       "expo-image",
-      "@react-native-vector-icons/ionicons"
+      "@react-native-vector-icons/ionicons",
+      "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "b2f1d188-c9e2-4583-b11d-5d00475f0d4b"
+      }
     }
   }
 }

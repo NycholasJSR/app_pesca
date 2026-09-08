@@ -1,7 +1,7 @@
 import { FlatList, View } from "react-native";
 
 import dados from "@/assets/dados_falsos.json";
-import { CardPrecos } from "../../components/cardPrecos";
+import { CardPrecos } from "@/components/cardPrecos";
 
 type DadosPeixe = {
   id: number;
