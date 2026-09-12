@@ -63,6 +63,86 @@
         "latitude": -20.129101544920807,
         "longitude": -40.20794564650989
       }
+    },
+    {
+      "id": 9,
+      "nome": "Linhares",
+      "coordenadas": null
+    },
+    {
+      "id": 10,
+      "nome": "Piúma",
+      "coordenadas": null
+    },
+    {
+      "id": 11,
+      "nome": "Pontal do Ipiranga",
+      "coordenadas": null
+    },
+    {
+      "id": 12,
+      "nome": "Regência",
+      "coordenadas": null
+    },
+    {
+      "id": 13,
+      "nome": "Santa Cruz",
+      "coordenadas": null
+    },
+    {
+      "id": 14,
+      "nome": "Vila Velha",
+      "coordenadas": null
+    },
+    {
+      "id": 15,
+      "nome": "Vitória",
+      "coordenadas": null
+    },
+    {
+      "id": 16,
+      "nome": "Aracruz",
+      "coordenadas": null
+    },
+    {
+      "id": 17,
+      "nome": "Povoação",
+      "coordenadas": null
+    },
+    {
+      "id": 18,
+      "nome": "Ubu / Parati",
+      "coordenadas": null
+    },
+    {
+      "id": 19,
+      "nome": "Manguinhos",
+      "coordenadas": null
+    },
+    {
+      "id": 20,
+      "nome": "Perocão",
+      "coordenadas": null
+    },
+    {
+      "id": 21,
+      "nome": "Barra do Itapemirim",
+      "coordenadas": null
+    },
+    {
+      "id": 22,
+      "nome": "Marobá",
+      "coordenadas": null
+    },
+    {
+      "id": 23,
+      "nome": "Pontal do Itapemirim",
+      "coordenadas": null
+    },
+    {
+      "id": 24,
+      "nome": "Nova Almeida",
+      "coordenadas": null
     }
   ]
 }
