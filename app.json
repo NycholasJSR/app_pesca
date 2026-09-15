@@ -35,6 +35,12 @@
         }
       ],
       "expo-image",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Permita que o App Pesca use sua localização para identificar a localidade de pesca mais próxima."
+        }
+      ],
       "@react-native-vector-icons/ionicons",
       "expo-sqlite"
     ],

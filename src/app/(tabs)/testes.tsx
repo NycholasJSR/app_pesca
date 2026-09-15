@@ -24,7 +24,7 @@ export default function Testes() {
         const dados = await db.getAllAsync<RegistroTeste>(
           `SELECT ano, mes, localidade, local_descarga,
             nome_referencia, kg_no_periodo, valor_estimado_no_periodo
-           FROM base_pesca_tratada
+             FROM base_dados_viagens
            LIMIT 5`,
         );
         setRegistros(dados);

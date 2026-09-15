@@ -8,8 +8,8 @@ export default function RootLayout() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <SQLiteProvider
-        databaseName="base_pesca_tratada.db"
-        assetSource={{ assetId: require("@/assets/pesca_tratada.db") }}
+        databaseName="bd_viagens.db"
+        assetSource={{ assetId: require("@/assets/bd_viagens.db") }}
       >
         <Tabs
           screenOptions={{
