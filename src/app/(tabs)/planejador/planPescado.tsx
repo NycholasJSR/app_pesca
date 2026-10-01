@@ -18,8 +18,9 @@ type ResumoEspecie = {
 
 type ItemRanqueado = {
   nome: string;
-  total_registros: number;
   total_kg: number | null;
+  total_descargas: number | null;
+  cpue: number | null;
 };
 
 type ResultadoPesquisa = ResumoEspecie & {
@@ -30,6 +31,13 @@ type ResultadoPesquisa = ResumoEspecie & {
 function formatarQuilos(quantidade: number | null) {
   return (quantidade ?? 0).toLocaleString("pt-BR", {
     maximumFractionDigits: 0,
+  });
+}
+
+function formatarCPUE(quantidade: number | null) {
+  return (quantidade ?? 0).toLocaleString("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   });
 }
 
@@ -111,12 +119,12 @@ export default function PlanejadorLayout() {
     try {
       const parametros = [especie.toLowerCase()];
       const resumo = await db.getFirstAsync<ResumoEspecie>(
-        `SELECT nome_referencia,
+        `SELECT TRIM(nome_referencia) AS nome_referencia,
                 COUNT(*) AS total_registros,
                 COALESCE(SUM(kg_no_periodo), 0) AS total_kg
-           FROM base_dados_viagens
-          WHERE lower(nome_referencia) = ?
-          GROUP BY nome_referencia
+           FROM base_principal
+          WHERE lower(TRIM(nome_referencia)) = ?
+          GROUP BY TRIM(nome_referencia)
           LIMIT 1`,
         parametros,
       );
@@ -128,27 +136,33 @@ export default function PlanejadorLayout() {
 
       const [localidades, aparelhos] = await Promise.all([
         db.getAllAsync<ItemRanqueado>(
-          `SELECT COALESCE(NULLIF(TRIM(localidade), ''),
-                           NULLIF(TRIM(municipio), ''),
-                           'Localidade não informada') AS nome,
-                  COUNT(*) AS total_registros,
-                  COALESCE(SUM(kg_no_periodo), 0) AS total_kg
-             FROM base_dados_viagens
-            WHERE lower(nome_referencia) = ?
+          `SELECT COALESCE(NULLIF(TRIM(municipio), ''),
+                           'Município não informado') AS nome,
+                  COALESCE(SUM(kg_no_periodo), 0) AS total_kg,
+                  SUM(descargas_periodo) AS total_descargas,
+                  SUM(kg_no_periodo) * 1.0 / NULLIF(SUM(descargas_periodo), 0) AS cpue
+             FROM base_principal
+            WHERE lower(TRIM(nome_referencia)) = ?
+              AND kg_no_periodo >= 0
+              AND descargas_periodo > 0
             GROUP BY nome
-            ORDER BY total_registros DESC, total_kg DESC, nome ASC
+            ORDER BY cpue DESC, total_kg DESC, nome ASC
             LIMIT 3`,
           parametros,
         ),
         db.getAllAsync<ItemRanqueado>(
-          `SELECT COALESCE(NULLIF(TRIM(aparelho_pesca_referencia), ''),
-                           'Aparelho não informado') AS nome,
-                  COUNT(*) AS total_registros,
-                  COALESCE(SUM(kg_no_periodo), 0) AS total_kg
-             FROM base_dados_viagens
-            WHERE lower(nome_referencia) = ?
+          `SELECT TRIM(aparelho_pesca_referencia) AS nome,
+                  COALESCE(SUM(kg_no_periodo), 0) AS total_kg,
+                  SUM(descargas_periodo) AS total_descargas,
+                  SUM(kg_no_periodo) * 1.0 / NULLIF(SUM(descargas_periodo), 0) AS cpue
+             FROM base_principal
+            WHERE lower(TRIM(nome_referencia)) = ?
+              AND aparelho_pesca_referencia IS NOT NULL
+              AND TRIM(aparelho_pesca_referencia) <> ''
+              AND kg_no_periodo >= 0
+              AND descargas_periodo > 0
             GROUP BY nome
-            ORDER BY total_registros DESC, total_kg DESC, nome ASC
+            ORDER BY cpue DESC, total_kg DESC, nome ASC
             LIMIT 3`,
           parametros,
         ),
@@ -222,15 +236,16 @@ export default function PlanejadorLayout() {
           </Text>
 
           <View style={styles.secao}>
-            <Text style={styles.secaoTitulo}>Principais localidades</Text>
+            <Text style={styles.secaoTitulo}>Localidades com maior CPUE</Text>
             {resultado.localidades.map((localidade, index) => (
               <View key={localidade.nome} style={styles.linha}>
                 <Text style={styles.posicao}>{index + 1}</Text>
                 <View style={styles.linhaConteudo}>
                   <Text style={styles.linhaTitulo}>{localidade.nome}</Text>
                   <Text style={styles.linhaDetalhe}>
-                    {localidade.total_registros} registros ·{" "}
-                    {formatarQuilos(localidade.total_kg)} kg
+                    {formatarCPUE(localidade.cpue)} kg/descarga ·{" "}
+                    {formatarQuilos(localidade.total_kg)} kg em{" "}
+                    {formatarQuilos(localidade.total_descargas)} descargas
                   </Text>
                 </View>
               </View>
@@ -238,15 +253,16 @@ export default function PlanejadorLayout() {
           </View>
 
           <View style={styles.secao}>
-            <Text style={styles.secaoTitulo}>Aparelhos mais utilizados</Text>
+            <Text style={styles.secaoTitulo}>Aparelhos com maior CPUE</Text>
             {resultado.aparelhos.map((aparelho, index) => (
               <View key={aparelho.nome} style={styles.linha}>
                 <Text style={styles.posicao}>{index + 1}</Text>
                 <View style={styles.linhaConteudo}>
                   <Text style={styles.linhaTitulo}>{aparelho.nome}</Text>
                   <Text style={styles.linhaDetalhe}>
-                    Usado em {aparelho.total_registros} registros ·{" "}
-                    {formatarQuilos(aparelho.total_kg)} kg
+                    {formatarCPUE(aparelho.cpue)} kg/descarga ·{" "}
+                    {formatarQuilos(aparelho.total_kg)} kg em{" "}
+                    {formatarQuilos(aparelho.total_descargas)} descargas
                   </Text>
                 </View>
               </View>

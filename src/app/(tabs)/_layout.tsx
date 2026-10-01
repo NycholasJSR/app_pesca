@@ -6,10 +6,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RootLayout() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView edges={["top"]} style={{ flex: 1 }}>
       <SQLiteProvider
-        databaseName="bd_viagens.db"
-        assetSource={{ assetId: require("@/assets/bd_viagens.db") }}
+        databaseName="data.db"
+        assetSource={{ assetId: require("@/assets/data.db") }}
       >
         <Tabs
           screenOptions={{
@@ -35,7 +35,7 @@ export default function RootLayout() {
           <Tabs.Screen
             name="index"
             options={{
-              title: "Home",
+              title: "Pag Inicial",
               headerShown: false,
               tabBarIcon: () => <Lucide name="home" size={24} color="#fff" />,
             }}
@@ -47,17 +47,6 @@ export default function RootLayout() {
               title: "Preços",
               headerShown: false,
               tabBarIcon: () => <Lucide name="fish" size={24} color="#fff" />,
-            }}
-          />
-
-          <Tabs.Screen
-            name="testes"
-            options={{
-              title: "Testes",
-              headerShown: false,
-              tabBarIcon: () => (
-                <Lucide name="database" size={24} color="#fff" />
-              ),
             }}
           />
         </Tabs>
